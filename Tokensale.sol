@@ -5,17 +5,16 @@ import "./Token.sol";
 contract MyTokenSale {
 
 
-    MyToken public myToken; // Custom MyToken contract being sold
-    uint256 public tokenPrice; // Initial price of each token in Ether
-    uint256 public rate; // Rate of tokens per Ether
-    uint256 public crowdsaleStartTime; // Start time of the crowdsale
-    uint256 public crowdsaleEndTime; // End time of the crowdsale
-    bool public crowdsaleActive; // Flag to indicate whether the crowdsale is active or not
+    MyToken public myToken; 
+    uint256 public tokenPrice; 
+    uint256 public rate; 
+    uint256 public crowdsaleStartTime; 
+    uint256 public crowdsaleEndTime; 
+    bool public crowdsaleActive; 
 
-    mapping(address => uint256) public tokensPurchased; // Track the number of tokens purchased by each address
-    uint256 public totalEtherRaised; // Total Ether raised in the crowdsale
-    uint256 public totalTokensSold; // Total tokens sold in the crowdsale
-
+    mapping(address => uint256) public tokensPurchased; 
+    uint256 public totalEtherRaised;
+    uint256 public totalTokensSold; 
     event TokensPurchased(address indexed buyer, uint256 etherAmount, uint256 tokenAmount);
 
     modifier onlyDuringCrowdsale() {
@@ -59,16 +58,16 @@ contract MyTokenSale {
     function purchaseTokens() external payable onlyDuringCrowdsale {
         require(msg.value > 0, "Ether amount should be greater than zero");
 
-        uint256 tokenAmount = msg.value*(rate); // Calculate the number of tokens based on the rate
+        uint256 tokenAmount = msg.value*(rate); 
         require(tokenAmount <= myToken.balanceOf(address(this)), "Not enough tokens available for sale");
 
-        myToken.transfer(msg.sender, tokenAmount); // Transfer tokens to the buyer
-        tokensPurchased[msg.sender]+=(tokenAmount); // Record the purchase
+        myToken.transfer(msg.sender, tokenAmount); 
+        tokensPurchased[msg.sender]+=(tokenAmount);
 
-        totalEtherRaised += (msg.value); // Update total Ether raised
-        totalTokensSold += (tokenAmount); // Update total tokens sold
+        totalEtherRaised += (msg.value);
+        totalTokensSold += (tokenAmount); 
 
-        emit TokensPurchased(msg.sender, msg.value, tokenAmount); // Emit an event to log the purchase
+        emit TokensPurchased(msg.sender, msg.value, tokenAmount); 
     }
 
     function withdrawFunds() external {
